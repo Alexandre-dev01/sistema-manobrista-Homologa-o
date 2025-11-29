@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Sistema de Manobrista</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="custom_alerts.css" />
+  </head>
+  <body class="auth-page">
+    <div class="auth-container">
+      <div class="logo">
+        <img src="front_img/logoDNA - Editado.png" alt="Logo DNA Manobristas" />
+      </div>
+      <h1>Login</h1>
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="username">Usuário</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            maxlength="30"
+          />
+        </div>
+        <div class="input-group">
+          <label for="password">Senha</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            maxlength="60"
+          />
+        </div>
+        <button type="submit" class="btn-action">ENTRAR</button>
+      </form>
+    </div>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="login.js"></script>
+  </body>
+</html>

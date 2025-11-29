@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro em Massa - Sistema de Manobrista</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="custom_alerts.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          src="./front_img/logoDNA - Editado.png"
+          alt="Logo DNA Manobristas"
+          class="logo"
+        />
+        <h1>Sistema de Manobristas</h1>
+      </div>
+      <div class="user-info">
+        <p id="userInfoText">Bem-vindo</p>
+        <button id="logoutButton" class="logout-button">Sair</button>
+      </div>
+    </header>
+    <main>
+      <h2>Registro em Massa de Veículos</h2>
+      <div
+        id="activeEventDisplay"
+        class="active-event-card"
+        style="display: none"
+      >
+        <h2>Evento Ativo</h2>
+        <p>
+          <i class="fas fa-calendar-check"></i><strong>Nome:</strong>
+          <span id="activeEventName"></span>
+        </p>
+        <p>
+          <i class="fas fa-map-marker-alt"></i><strong>Local:</strong>
+          <span id="activeEventLocation"></span>
+        </p>
+        <p>
+          <i class="fas fa-calendar-day"></i><strong>Data:</strong>
+          <span id="activeEventDate"></span>
+        </p>
+      </div>
+
+      <div class="generate-table-section">
+        <div class="add-rows-control">
+          <label for="addRowCount">Adicionar Linhas:</label>
+          <input type="number" id="addRowCount" value="10" min="1" max="200" />
+          <button id="addRowsBtn" class="btn-action-icon btn-add">
+            <i class="fas fa-plus"></i> Adicionar
+          </button>
+        </div>
+        <div class="table-actions">
+          <button id="clearEmptyRowsBtn" class="btn-action-icon btn-clear">
+            <i class="fas fa-broom"></i> Limpar Vazias
+          </button>
+          <button id="generatePdfBtn" class="btn-action-icon btn-pdf">
+            <i class="fas fa-file-pdf"></i> Gerar Mapa
+          </button>
+        </div>
+      </div>
+
+      <div class="search-section">
+        <label for="searchInput">Buscar na Tabela:</label>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Digite para buscar em qualquer campo..."
+        />
+      </div>
+
+      <form id="massRegisterForm">
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Prisma</th>
+                <th>Ticket</th>
+                <th>Modelo</th>
+                <th>Cor</th>
+                <th>Placa</th>
+                <th>Localização</th>
+                <th>Observações</th>
+                <th>Ações</th>
+                <!-- NOVA COLUNA -->
+              </tr>
+            </thead>
+            <tbody id="vehiclesTableBody">
+              <!-- Linhas serão geradas pelo JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="btn-primary">
+          Registrar Veículos Preenchidos
+        </button>
+      </form>
+      <a href="dashboard.html" class="back-button">Voltar para Dashboard</a>
+    </main>
+    <footer>
+      <p>&copy; 2025 DNA Manobristas. Todos os direitos reservados.</p>
+    </footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="registro_massa_veiculos.js"></script>
+  </body>
+</html>

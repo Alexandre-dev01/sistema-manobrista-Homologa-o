@@ -1,0 +1,95 @@
+body.swal2-shown:not(.swal2-no-backdrop) {
+  overflow-y: hidden !important;
+}
+
+.swal2-popup {
+  background-color: var(--cor-primaria) !important; /* Fundo do pop-up */
+  color: var(--cor-texto-principal) !important; /* Cor do texto principal */
+  border-radius: 12px !important;
+  border: 1px solid var(--cor-borda-card);
+}
+
+.swal2-title {
+  color: #ffffff !important; /* Título mais branco para destaque */
+}
+
+.swal2-html-container {
+  color: var(
+    --cor-texto-secundario
+  ) !important; /* Texto de descrição mais suave */
+}
+
+/* Ícones (Sucesso, Erro, Aviso) */
+.swal2-icon.swal2-success .swal2-success-line-tip,
+.swal2-icon.swal2-success .swal2-success-line-long {
+  background-color: var(--cor-sucesso) !important;
+}
+.swal2-icon.swal2-success-ring {
+  border-color: rgba(46, 204, 113, 0.3) !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: var(--cor-erro) !important;
+}
+.swal2-icon.swal2-error [class^="swal2-x-mark-line"] {
+  background-color: var(--cor-erro) !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: var(--cor-aviso) !important;
+  color: var(--cor-aviso) !important;
+}
+
+/* Botões */
+.swal2-styled.swal2-confirm {
+  background-color: var(
+    --cor-accent
+  ) !important; /* Botão de confirmação laranja */
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+.swal2-styled.swal2-confirm:focus {
+  box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.4) !important;
+}
+
+.swal2-styled.swal2-cancel {
+  background-color: #6c757d !important; /* Botão de cancelar cinza */
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+
+/* Barra de progresso do timer (para toasts) */
+.swal2-timer-progress-bar {
+  background-color: var(--cor-accent) !important;
+}
+.swal-popup-custom .swal-icon-custom {
+  font-size: 1.6em;
+  color: var(--cor-aviso);
+}
+
+.swal-popup-custom .swal-icon-borderless {
+  border: none !important;
+}
+
+.swal-popup-custom .swal-confirm-custom {
+  background-color: var(
+    --cor-erro
+  ) !important; /* Vermelho para ação destrutiva */
+}
+
+.swal-popup-custom .swal-cancel-custom {
+  background-color: #6c757d !important;
+}
+.swal-error-list {
+  text-align: left;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.swal-popup-custom {
+  width: 90vw !important; /* Ocupa 90% da largura da tela */
+  max-width: 480px !important; /* Mas não passa de 480px em telas grandes */
+}

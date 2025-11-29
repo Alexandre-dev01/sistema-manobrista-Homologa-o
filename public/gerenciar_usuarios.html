@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Usuários - Sistema de Manobrista</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="custom_alerts.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header id="header-container"></header>
+    <main>
+      <div class="container">
+        <h1><i class="fas fa-users-cog"></i> Gerenciar Usuários</h1>
+
+        <div class="form-container" id="cadastroContainer">
+          <h2><i class="fas fa-user-plus"></i> Cadastrar Novo Usuário</h2>
+          <form id="registerForm">
+            <div class="form-group">
+              <label for="nome_usuario">Nome de Usuário:</label>
+              <input
+                type="text"
+                id="nome_usuario"
+                required
+                maxlength="30"
+                autocomplete="username"
+              />
+            </div>
+            <div class="form-group">
+              <label for="senha">Senha:</label>
+              <input
+                type="password"
+                id="senha"
+                required
+                maxlength="60"
+                autocomplete="new-password"
+              />
+              <div class="password-requirements">
+                <p id="reqLength" class="invalid">Mínimo de 6 caracteres</p>
+                <p id="reqUppercase" class="invalid">
+                  Pelo menos 1 letra maiúscula
+                </p>
+                <p id="reqLowercase" class="invalid">
+                  Pelo menos 1 letra minúscula
+                </p>
+                <p id="reqNumber" class="invalid">Pelo menos 1 número</p>
+                <p id="reqSpecial" class="invalid">
+                  Pelo menos 1 caractere especial (!@#$%^&* )
+                </p>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirm_senha">Confirmar Senha:</label>
+              <input
+                type="password"
+                id="confirm_senha"
+                required
+                maxlength="60"
+                autocomplete="new-password"
+              />
+              <p id="matchMessage" class="invalid" style="display: none">
+                Senhas não coincidem
+              </p>
+            </div>
+            <div class="form-group">
+              <label for="cargo">Cargo:</label>
+              <select id="cargo" required>
+                <option value="">Selecione o Cargo</option>
+                <option value="manobrista">Manobrista</option>
+                <option value="orientador">Orientador</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              class="btn-primary"
+              id="registerButton"
+              disabled
+            >
+              <i class="fas fa-plus-circle"></i> Cadastrar Usuário
+            </button>
+          </form>
+        </div>
+
+        <div class="user-list-container">
+          <h2><i class="fas fa-users"></i> Usuários Cadastrados</h2>
+
+          <div class="list-controls">
+            <div class="role-legend">
+              <span class="legend-item"
+                ><i class="fas fa-crown role-icon-legend role-admin"></i>
+                Admin</span
+              >
+              <span class="legend-item"
+                ><i
+                  class="fas fa-clipboard-user role-icon-legend role-orientador"
+                ></i>
+                Orientador</span
+              >
+              <span class="legend-item"
+                ><i class="fas fa-car role-icon-legend role-manobrista"></i>
+                Manobrista</span
+              >
+            </div>
+            <div class="view-toggle">
+              <button id="showActiveBtn" class="toggle-btn active">
+                <i class="fas fa-user-check"></i> Ativos
+              </button>
+              <button id="showInactiveBtn" class="toggle-btn">
+                <i class="fas fa-user-slash"></i> Inativos
+              </button>
+            </div>
+          </div>
+
+          <div class="list-header">
+            <span class="header-label user-info-col">Usuário</span>
+            <span class="header-label user-role-col">Cargo</span>
+            <span class="header-label user-actions-col">Ações</span>
+          </div>
+          <div id="userList">
+            <p class="loading-message">Carregando usuários...</p>
+          </div>
+        </div>
+
+        <a href="dashboard.html" class="back-button">Voltar para Dashboard</a>
+      </div>
+    </main>
+    <footer id="footer-container"></footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="gerenciar_usuarios.js"></script>
+  </body>
+</html>

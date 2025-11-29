@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Entrada - Sistema de Manobrista</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="custom_alerts.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          src="./front_img/logoDNA - Editado.png"
+          alt="Logo DNA Manobristas"
+          class="logo"
+        />
+        <h1>Sistema de Manobristas</h1>
+      </div>
+      <div class="user-info">
+        <p id="userInfoText">Bem-vindo</p>
+        <button id="logoutButton" class="logout-button">Sair</button>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <h1>Registrar Entrada de Veículo</h1>
+        <!-- NOVO HTML PARA O CARD DE EVENTO ATIVO -->
+        <div
+          id="eventInfoDisplay"
+          class="active-event-card"
+          style="display: none"
+        >
+          <!-- Conteúdo será gerado pelo JavaScript (renderActiveEventCard ) -->
+        </div>
+        <!-- FIM NOVO HTML -->
+
+        <form id="entradaVeiculoForm" autocomplete="off">
+          <div class="form-group">
+            <label for="numeroTicket">Número do Ticket</label>
+            <input type="text" id="numeroTicket" required maxlength="10" />
+          </div>
+          <div class="form-group">
+            <label for="modeloCarro">Modelo do Carro</label>
+            <input type="text" id="modeloCarro" required maxlength="50" />
+          </div>
+          <div class="form-group">
+            <label for="corCarro">Cor</label>
+            <input type="text" id="corCarro" required maxlength="20" />
+          </div>
+          <div class="form-group">
+            <label for="placaCarro">Placa</label>
+            <input
+              type="text"
+              id="placaCarro"
+              required
+              autocomplete="off"
+              maxlength="8"
+            />
+          </div>
+          <div class="form-group">
+            <label for="localizacaoCarro">Localização (Fila/Setor )</label>
+            <input type="text" id="localizacaoCarro" required maxlength="50" />
+          </div>
+
+          <div class="form-group">
+            <label for="observacoesCarro">Observações (opcional)</label>
+            <textarea id="observacoesCarro" rows="3" maxlength="255"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Registrar Entrada</button>
+          <p id="message" class="message"></p>
+        </form>
+        <a href="dashboard.html" class="back-button">Voltar para Dashboard</a>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2025 DNA Manobristas. Todos os direitos reservados.</p>
+    </footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="entrada_veiculo.js"></script>
+  </body>
+</html>

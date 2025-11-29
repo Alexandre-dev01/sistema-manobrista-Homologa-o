@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consultar Veículos - Sistema de Manobrista</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="custom_alerts.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          src="./front_img/logoDNA - Editado.png"
+          alt="Logo DNA Manobristas"
+          class="logo"
+        />
+        <h1>Sistema de Manobristas</h1>
+      </div>
+      <div class="user-info">
+        <p id="userInfoText">Bem-vindo</p>
+        <button id="logoutButton" class="logout-button">Sair</button>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <h1>Consultar Veículos</h1>
+        <!-- NOVO HTML PARA O CARD DE EVENTO ATIVO -->
+        <div
+          id="eventInfoDisplay"
+          class="active-event-card"
+          style="display: none"
+        >
+          <!-- Conteúdo será gerado pelo JavaScript (renderActiveEventCard ) -->
+        </div>
+        <!-- FIM NOVO HTML -->
+        <div class="pdf-button-container">
+          <button id="generatePdfBtn" class="btn-primary">
+            Gerar PDF da Lista
+          </button>
+        </div>
+        <div class="search-filter-group">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Buscar por Ticket ou Placa"
+          />
+          <select id="statusFilter">
+            <option value="">Todos os Status</option>
+            <option value="estacionado">Estacionado</option>
+            <option value="saiu">Saído</option>
+          </select>
+        </div>
+        <div id="vehicleList" class="vehicle-list">
+          <p
+            id="noVehiclesMessage"
+            class="no-vehicles-message"
+            style="display: none"
+          >
+            Nenhum veículo encontrado.
+          </p>
+        </div>
+        <a href="dashboard.html" class="back-button">Voltar para Dashboard</a>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2025 DNA Manobristas. Todos os direitos reservados.</p>
+    </footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="consulta_veiculos.js"></script>
+  </body>
+</html>

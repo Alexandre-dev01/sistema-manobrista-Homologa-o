@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Sistema de Manobrista</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="custom_alerts.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          src="./front_img/logoDNA - Editado.png"
+          alt="Logo DNA Manobristas"
+          class="logo"
+        />
+        <h1>Sistema de Manobristas</h1>
+      </div>
+      <div class="user-info">
+        <p id="userInfoText">Bem-vindo</p>
+        <button id="logoutButton" class="logout-button">Sair</button>
+      </div>
+    </header>
+
+    <main>
+      <div
+        id="activeEventDisplay"
+        class="active-event-card"
+        style="display: none"
+      >
+        <h2><i class="fas fa-calendar-check"></i> Evento Ativo</h2>
+        <div class="event-details-grid">
+          <p>
+            <strong><i class="fas fa-signature"></i>Nome:</strong>
+            <span id="activeEventName"></span>
+          </p>
+          <p>
+            <strong><i class="fas fa-map-marker-alt"></i>Local:</strong>
+            <span id="activeEventLocation"></span>
+          </p>
+          <p>
+            <strong><i class="fas fa-calendar-day"></i>Data:</strong>
+            <span id="activeEventDate"></span>
+          </p>
+          <p>
+            <strong><i class="fas fa-clock"></i>Horário:</strong>
+            <span id="activeEventTime"></span>
+          </p>
+        </div>
+      </div>
+
+      <button id="changeEventBtn" class="btn-primary">
+        <i class="fas fa-exchange-alt"></i> Selecionar/Trocar Evento Ativo
+      </button>
+
+      <div id="statsContainer" class="stats-grid" style="display: none">
+        <!-- Cards de estatísticas serão inseridos aqui via JS -->
+      </div>
+
+      <div class="card-container">
+        <div class="card" id="cardEventos">
+          <i class="fas fa-calendar-alt card-icon"></i>
+          <h2>Gerenciar Eventos</h2>
+          <p>Crie, ative e gere relatórios.</p>
+        </div>
+        <div class="card" id="cardRegistrarEntrada">
+          <i class="fas fa-sign-in-alt card-icon"></i>
+          <h2>Registrar Entrada</h2>
+          <p>Adicione novos veículos.</p>
+        </div>
+        <div class="card" id="cardConsultaVeiculos">
+          <i class="fas fa-search-location card-icon"></i>
+          <h2>Consultar Veículos</h2>
+          <p>Busque carros e registre saídas.</p>
+        </div>
+        <div class="card" id="cardRegistroMassa">
+          <i class="fas fa-car-side card-icon"></i>
+          <h2>Registro em Massa</h2>
+          <p>Registre múltiplos veículos.</p>
+        </div>
+        <div class="card" id="cardAnaliseConflitos">
+          <i class="fas fa-binoculars card-icon"></i>
+          <h2>Análise de Veículos</h2>
+          <p>Verifique veículos recorrentes em eventos.</p>
+        </div>
+        <div class="card" id="cardCadastrarUsuario">
+          <i class="fas fa-user-plus card-icon"></i>
+          <h2>Gerenciar Usuarios</h2>
+          <p>Cadastre ou exclua usuarios.</p>
+        </div>
+      </div>
+
+      <div id="eventSelectorModal" class="modal" style="display: none">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Selecione um Evento para Ativar</h2>
+          <div id="modalEventList" class="modal-event-list"></div>
+          <button id="selectEventButton" class="btn-primary" disabled>
+            Definir como Ativo
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 DNA Manobristas. Todos os direitos reservados.</p>
+    </footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

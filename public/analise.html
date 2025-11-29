@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Análise de Frequência de Veículos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="custom_alerts.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Análise de Veículos Recorrentes</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          src="./front_img/logoDNA - Editado.png"
+          alt="Logo DNA Manobristas"
+          class="logo"
+        />
+        <h1>Sistema de Manobristas</h1>
+      </div>
+      <div class="user-info">
+        <p id="userInfoText">Bem-vindo</p>
+        <button id="logoutButton" class="logout-button">Sair</button>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <div class="analysis-controls">
+          <div class="controls-header">
+            <h2>Análise de Frequência de Veículos</h2>
+            <p>Descubra quais veículos frequentam múltiplos eventos.</p>
+          </div>
+
+          <div id="eventChecklist" class="event-checklist">
+            <p class="loading-message">Carregando eventos...</p>
+          </div>
+
+          <!-- CORREÇÃO DE LAYOUT AQUI -->
+          <div class="checklist-controls">
+            <button id="selectAllBtn" class="btn-secondary">
+              Selecionar Todos
+            </button>
+            <button id="clearAllBtn" class="btn-secondary">
+              Limpar Seleção
+            </button>
+          </div>
+
+          <button id="analyzeBtn" class="btn-primary" disabled>
+            <i class="fas fa-chart-bar"></i> Analisar Eventos Selecionados
+          </button>
+        </div>
+
+        <div id="analysisResult">
+          <div class="results-placeholder">
+            <i class="fas fa-search icon"></i>
+            <p>
+              Selecione dois ou mais eventos e clique em "Analisar" para ver os
+              resultados.
+            </p>
+          </div>
+        </div>
+
+        <a href="dashboard.html" class="back-button">Voltar para o Dashboard</a>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 DNA Manobristas. Todos os direitos reservados.</p>
+    </footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="analise.js"></script>
+  </body>
+</html>

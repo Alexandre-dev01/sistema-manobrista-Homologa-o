@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciar Eventos - Sistema de Manobrista</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="custom_alerts.css" />
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@latest/dist/jspdf.plugin.autotable.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img
+          src="./front_img/logoDNA - Editado.png"
+          alt="Logo DNA Manobristas"
+          class="logo"
+        />
+        <h1>Sistema de Manobristas</h1>
+      </div>
+      <div class="user-info">
+        <p id="userInfoText">Bem-vindo</p>
+        <button id="logoutButton" class="logout-button">Sair</button>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <h1>Gerenciar Eventos</h1>
+        <h2>Criar Novo Evento</h2>
+        <form id="createEventForm">
+          <div class="form-group">
+            <label for="nomeEvento">Nome do Evento</label>
+            <input type="text" id="nomeEvento" required maxlength="100" />
+          </div>
+          <div class="form-group">
+            <label for="dataEvento">Data de Início</label>
+            <input type="date" id="dataEvento" required />
+          </div>
+          <div class="form-group">
+            <label for="horaInicioEvento">Hora de Início</label>
+            <input type="time" id="horaInicioEvento" required />
+          </div>
+          <!-- NOVO CAMPO DATA DE FIM -->
+          <div class="form-group">
+            <label for="dataFimEvento">Data de Fim</label>
+            <input type="date" id="dataFimEvento" required />
+          </div>
+          <!-- FIM NOVO CAMPO -->
+          <div class="form-group">
+            <label for="horaFimEvento">Hora de Fim</label>
+            <input type="time" id="horaFimEvento" required />
+          </div>
+          <div class="form-group">
+            <label for="localEvento">Local do Evento</label>
+            <input type="text" id="localEvento" required maxlength="100" />
+          </div>
+          <div class="form-group">
+            <label for="descricaoEvento">Descrição (Opcional )</label>
+            <textarea id="descricaoEvento" rows="3" maxlength="255"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Criar Evento</button>
+          <p id="createMessage" class="message"></p>
+        </form>
+        <div class="event-list">
+          <h2>Eventos Existentes</h2>
+          <div id="eventsContainer">
+            <p class="message" id="noEventsMessage" style="display: none">
+              Nenhum evento cadastrado.
+            </p>
+          </div>
+        </div>
+        <a href="dashboard.html" class="back-button">Voltar para Dashboard</a>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2025 DNA Manobristas. Todos os direitos reservados.</p>
+    </footer>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="global.js"></script>
+    <script src="eventos.js"></script>
+  </body>
+</html>
