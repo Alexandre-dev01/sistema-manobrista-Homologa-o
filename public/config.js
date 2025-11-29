@@ -1,5 +1,5 @@
 const API_BASE_URL = window.location.hostname.includes("onrender.com")
-  ? "https://sistema-manobrista.onrender.com" // <--- ATENÇÃO: CONFIRA SE É ESSE O SEU LINK
+  ? "https://sistemhttps://sistema-manobrista-homologa-o.onrender.com/a-manobrista.onrender.com" // <--- ATENÇÃO: CONFIRA SE É ESSE O SEU LINK
   : "http://localhost:3000";
 
 console.log("API rodando em:", API_BASE_URL); // Só para ajudar a ver no console
