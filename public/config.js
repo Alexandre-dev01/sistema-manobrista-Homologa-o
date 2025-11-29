@@ -1,12 +1,9 @@
-/**
- * Define a URL base da API para todo o frontend.
- * Para testar localmente, use a URL do localhost.
- * Quando fizer o deploy, troque para a URL do seu backend na Railway.
- */
+const API_BASE_URL = window.location.hostname.includes("onrender.com")
+  ? "https://sistema-manobrista.onrender.com" // <--- ATENÇÃO: CONFIRA SE É ESSE O SEU LINK
+  : "http://localhost:3000";
 
-// --- AMBIENTE DE DESENVOLVIMENTO ---
-const API_BASE_URL = "http://localhost:3000";
+console.log("API rodando em:", API_BASE_URL); // Só para ajudar a ver no console
+// ... código anterior ...
 
-// --- AMBIENTE DE PRODUÇÃO ---
-// const API_BASE_URL =
-  //"https://sistema-gestao-manobrista-production.up.railway.app";
+console.log("API rodando em:", API_BASE_URL);
+console.log("VERSÃO NOVA DO DEPLOY 2.0"); // <--- Adicione esta linha
