@@ -1,6 +1,15 @@
+// users-admin.js
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. VERIFICAÇÃO DE PERMISSÃO
-  const { token, user: loggedInUser } = verificarAutenticacao();
+  let token = null;
+  let loggedInUser = null;
+  try {
+    const auth = typeof verificarAutenticacao === "function" ? verificarAutenticacao() : {};
+    token = auth.token;
+    loggedInUser = auth.user;
+  } catch (err) {
+    console.error("Erro ao verificar autenticação:", err);
+  }
+
   if (!loggedInUser || loggedInUser.cargo !== "admin") {
     Swal.fire({
       icon: "error",
@@ -12,8 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     playNotificationSound("error");
     return;
   }
-
-  // 2. SELEÇÃO DOS ELEMENTOS DO DOM
   const registerForm = document.getElementById("registerForm");
   const nomeUsuarioInput = document.getElementById("nome_usuario");
   const senhaInput = document.getElementById("senha");
@@ -26,11 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentView = "ativo";
 
-  // 3. LÓGICA DE CADASTRO (com verificação de existência do formulário)
+  if (registerButton) registerButton.disabled = true;
+
   if (registerForm) {
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      if (registerButton.disabled) return;
+      if (!registerButton || registerButton.disabled) return;
+
+      registerButton.disabled = true;
+      const originalText = registerButton.textContent;
+      registerButton.textContent = "Cadastrando...";
+
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -38,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         timer: 3000,
         timerProgressBar: true,
       });
+
       try {
         const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
           method: "POST",
@@ -46,14 +60,16 @@ document.addEventListener("DOMContentLoaded", () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            nome_usuario: nomeUsuarioInput.value,
-            senha: senhaInput.value,
-            cargo: cargoSelect.value,
+            nome_usuario: nomeUsuarioInput ? nomeUsuarioInput.value : "",
+            senha: senhaInput ? senhaInput.value : "",
+            cargo: cargoSelect ? cargoSelect.value : "",
           }),
         });
-        const data = await response.json();
+
+        const data = await response.json().catch(() => ({}));
+
         if (response.ok) {
-          Toast.fire({ icon: "success", title: data.message });
+          Toast.fire({ icon: "success", title: data.message || "Cadastrado com sucesso" });
           playNotificationSound("success");
           registerForm.reset();
           validatePassword();
@@ -62,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
           Swal.fire({
             icon: "error",
             title: "Erro no Cadastro",
-            text: data.message,
+            text: data.message || "Erro ao cadastrar usuário.",
           });
           playNotificationSound("error");
         }
@@ -73,11 +89,12 @@ document.addEventListener("DOMContentLoaded", () => {
           text: "Não foi possível conectar ao servidor.",
         });
         playNotificationSound("error");
+      } finally {
+        registerButton.disabled = false;
+        registerButton.textContent = originalText;
       }
     });
   }
-
-  // 4. LÓGICA DOS BOTÕES DE FILTRO (ATIVOS/INATIVOS)
   if (showActiveBtn && showInactiveBtn) {
     showActiveBtn.addEventListener("click", () => {
       currentView = "ativo";
@@ -93,157 +110,165 @@ document.addEventListener("DOMContentLoaded", () => {
       loadUsers();
     });
   }
-
-  // 5. FUNÇÃO PARA CARREGAR E EXIBIR A LISTA DE USUÁRIOS
   async function loadUsers() {
-    userListContainer.innerHTML =
-      '<p class="loading-message">Carregando usuários...</p>';
+    if (!userListContainer) return;
+    userListContainer.innerHTML = '<p class="loading-message">Carregando usuários...</p>';
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/auth?status=${currentView}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok)
-        throw new Error(`Falha ao carregar usuários: ${response.statusText}`);
+      const response = await fetch(`${API_BASE_URL}/api/auth?status=${currentView}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      const users = await response.json();
+      if (!response.ok) {
+        const text = await response.text().catch(() => "");
+        throw new Error(text || `Falha ao carregar usuários: ${response.status} ${response.statusText}`);
+      }
+
+      const users = await response.json().catch(() => []);
       userListContainer.innerHTML = "";
 
-      if (users.length === 0) {
+      if (!Array.isArray(users) || users.length === 0) {
         userListContainer.innerHTML = `<p class="no-data-message">Nenhum usuário ${currentView} encontrado.</p>`;
         return;
       }
 
       users.forEach((user) => {
         const userItem = document.createElement("div");
-        userItem.className = `user-item ${
-          user.status === "inativo" ? "inactive-user" : ""
-        }`;
+        userItem.className = `user-item ${user.status === "inativo" ? "inactive-user" : ""}`;
 
         const isSelf = user.id === loggedInUser.id;
-        let actionButtonHtml = '<span class="self-indicator">(Você)</span>';
-        if (!isSelf) {
-          if (user.status === "ativo") {
-            actionButtonHtml = `<button class="action-btn deactivate-btn" data-user-id="${user.id}" data-user-name="${user.nome_usuario}"><i class="fas fa-user-slash"></i> Desativar</button>`;
-          } else {
-            actionButtonHtml = `<button class="action-btn reactivate-btn" data-user-id="${user.id}" data-user-name="${user.nome_usuario}"><i class="fas fa-user-check"></i> Reativar</button>`;
-          }
+
+        // Coluna de info do usuário
+        const userInfoCol = document.createElement("div");
+        userInfoCol.className = "user-info-col";
+        const mobileLabel = document.createElement("span");
+        mobileLabel.className = "mobile-label";
+        mobileLabel.textContent = "Usuário:";
+        const userNameSpan = document.createElement("span");
+        userNameSpan.className = "user-name";
+        userNameSpan.innerHTML = '<i class="fas fa-user"></i> ';
+        userNameSpan.appendChild(document.createTextNode(user.nome_usuario));
+        userInfoCol.appendChild(mobileLabel);
+        userInfoCol.appendChild(userNameSpan);
+
+        // Coluna de cargo
+        const userRoleCol = document.createElement("div");
+        userRoleCol.className = "user-role-col";
+        const roleLabel = document.createElement("span");
+        roleLabel.className = "mobile-label";
+        roleLabel.textContent = "Cargo:";
+        const roleSpan = document.createElement("span");
+        roleSpan.className = `user-role role-${user.cargo}`;
+        roleSpan.textContent = user.cargo;
+        userRoleCol.appendChild(roleLabel);
+        userRoleCol.appendChild(roleSpan);
+
+        // Coluna de ações
+        const userActionsCol = document.createElement("div");
+        userActionsCol.className = "user-actions-col";
+        if (isSelf) {
+          const selfSpan = document.createElement("span");
+          selfSpan.className = "self-indicator";
+          selfSpan.textContent = "(Você)";
+          userActionsCol.appendChild(selfSpan);
+        } else {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = `action-btn ${user.status === "ativo" ? "deactivate-btn" : "reactivate-btn"}`;
+          btn.dataset.userId = user.id;
+          btn.dataset.userName = user.nome_usuario;
+          btn.innerHTML = user.status === "ativo"
+            ? '<i class="fas fa-user-slash"></i> Desativar'
+            : '<i class="fas fa-user-check"></i> Reativar';
+          userActionsCol.appendChild(btn);
         }
 
-        userItem.innerHTML = `
-          <div class="user-info-col">
-              <span class="mobile-label">Usuário:</span>
-              <span class="user-name"><i class="fas fa-user"></i> ${user.nome_usuario}</span>
-          </div>
-          <div class="user-role-col">
-              <span class="mobile-label">Cargo:</span>
-              <span class="user-role role-${user.cargo}">${user.cargo}</span>
-          </div>
-          <div class="user-actions-col">
-              ${actionButtonHtml}
-          </div>`;
+        userItem.appendChild(userInfoCol);
+        userItem.appendChild(userRoleCol);
+        userItem.appendChild(userActionsCol);
         userListContainer.appendChild(userItem);
       });
-
-      addEventListeners();
+      if (!userListContainer.__hasDelegation) {
+        userListContainer.addEventListener("click", (e) => {
+          const btn = e.target.closest(".action-btn");
+          if (!btn) return;
+          const userId = btn.dataset.userId;
+          const userName = btn.dataset.userName;
+          if (btn.classList.contains("deactivate-btn")) {
+            showThemedConfirmation({
+              title: "Desativar Usuário?",
+              text: `Você está prestes a desativar o acesso de <strong>"${userName}"</strong>.`,
+              icon: "fa-user-slash",
+              confirmButtonText: "Sim, desativar",
+            }).then((isConfirmed) => {
+              if (isConfirmed) deactivateUser(userId);
+            });
+            playNotificationSound("notification");
+          } else if (btn.classList.contains("reactivate-btn")) {
+            showThemedConfirmation({
+              title: "Reativar Usuário?",
+              text: `Deseja conceder o acesso novamente para <strong>"${userName}"</strong>?`,
+              icon: "fa-user-check",
+              confirmButtonText: "Sim, reativar",
+            }).then((isConfirmed) => {
+              if (isConfirmed) reactivateUser(userId);
+            });
+            playNotificationSound("notification");
+          }
+        });
+        userListContainer.__hasDelegation = true;
+      }
     } catch (error) {
+      console.error("Erro ao carregar usuários:", error);
       userListContainer.innerHTML = `<p class="error-message">${error.message}</p>`;
     }
   }
-
-  // 6. FUNÇÃO PARA ADICIONAR LISTENERS AOS BOTÕES DE AÇÃO
-  function addEventListeners() {
-    document.querySelectorAll(".deactivate-btn").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        const userId = e.currentTarget.dataset.userId;
-        const userName = e.currentTarget.dataset.userName;
-        showThemedConfirmation({
-          title: "Desativar Usuário?",
-          text: `Você está prestes a desativar o acesso de <strong>"${userName}"</strong>.`,
-          icon: "fa-user-slash",
-          confirmButtonText: "Sim, desativar",
-        }).then((isConfirmed) => {
-          if (isConfirmed) deactivateUser(userId);
-        });
-        playNotificationSound("notification");
-      });
-    });
-
-    document.querySelectorAll(".reactivate-btn").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        const userId = e.currentTarget.dataset.userId;
-        const userName = e.currentTarget.dataset.userName;
-        showThemedConfirmation({
-          title: "Reativar Usuário?",
-          text: `Deseja conceder o acesso novamente para <strong>"${userName}"</strong>?`,
-          icon: "fa-user-check",
-          confirmButtonText: "Sim, reativar",
-        }).then((isConfirmed) => {
-          if (isConfirmed) reactivateUser(userId);
-        });
-        playNotificationSound("notification");
-      });
-    });
-  }
-
-  // 7. FUNÇÕES DE AÇÃO (DESATIVAR E REATIVAR)
   async function deactivateUser(userId) {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/auth/${userId}/deactivate`,
-        {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
+      const response = await fetch(`${API_BASE_URL}/api/auth/${userId}/deactivate`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || "Erro ao desativar usuário");
       Swal.fire({
         icon: "success",
         title: "Desativado!",
-        text: data.message,
+        text: data.message || "Usuário desativado com sucesso",
         timer: 2000,
         showConfirmButton: false,
       });
       playNotificationSound("success");
       loadUsers();
     } catch (error) {
-      Swal.fire("Erro!", error.message, "error");
+      Swal.fire("Erro!", error.message || "Erro ao desativar usuário", "error");
       playNotificationSound("error");
     }
   }
 
   async function reactivateUser(userId) {
     try {
-      const response = await fetch(
-        `${API_BASE_URL}/api/auth/${userId}/reactivate`,
-        {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message);
+      const response = await fetch(`${API_BASE_URL}/api/auth/${userId}/reactivate`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || "Erro ao reativar usuário");
       Swal.fire({
         icon: "success",
         title: "Reativado!",
-        text: data.message,
+        text: data.message || "Usuário reativado com sucesso",
         timer: 2000,
         showConfirmButton: false,
       });
       playNotificationSound("success");
       loadUsers();
     } catch (error) {
-      Swal.fire("Erro!", error.message, "error");
+      Swal.fire("Erro!", error.message || "Erro ao reativar usuário", "error");
       playNotificationSound("error");
     }
   }
-
-  // 8. VALIDAÇÃO DE SENHA E CARGA INICIAL
   function validatePassword() {
-    if (!senhaInput || !confirmSenhaInput || !registerButton) return;
+    if (!senhaInput || !confirmSenhaInput || !registerButton || !nomeUsuarioInput || !cargoSelect) return;
     const senha = senhaInput.value;
     const confirmSenha = confirmSenhaInput.value;
     const requirements = {
@@ -253,32 +278,28 @@ document.addEventListener("DOMContentLoaded", () => {
       number: /[0-9]/.test(senha),
       special: /[!@#$%^&*]/.test(senha),
     };
-    document.getElementById("reqLength").className = requirements.length
-      ? "valid"
-      : "invalid";
-    document.getElementById("reqUppercase").className = requirements.uppercase
-      ? "valid"
-      : "invalid";
-    document.getElementById("reqLowercase").className = requirements.lowercase
-      ? "valid"
-      : "invalid";
-    document.getElementById("reqNumber").className = requirements.number
-      ? "valid"
-      : "invalid";
-    document.getElementById("reqSpecial").className = requirements.special
-      ? "valid"
-      : "invalid";
+
+    const setClass = (id, ok) => {
+      const el = document.getElementById(id);
+      if (el) el.className = ok ? "valid" : "invalid";
+    };
+
+    setClass("reqLength", requirements.length);
+    setClass("reqUppercase", requirements.uppercase);
+    setClass("reqLowercase", requirements.lowercase);
+    setClass("reqNumber", requirements.number);
+    setClass("reqSpecial", requirements.special);
 
     const matchMessage = document.getElementById("matchMessage");
     const passwordsMatch = senha === confirmSenha && senha !== "";
-    if (confirmSenha !== "") {
-      matchMessage.style.display = "block";
-      matchMessage.className = passwordsMatch ? "valid" : "invalid";
-      matchMessage.textContent = passwordsMatch
-        ? "Senhas coincidem"
-        : "Senhas não coincidem";
-    } else {
-      matchMessage.style.display = "none";
+    if (matchMessage) {
+      if (confirmSenha !== "") {
+        matchMessage.style.display = "block";
+        matchMessage.className = passwordsMatch ? "valid" : "invalid";
+        matchMessage.textContent = passwordsMatch ? "Senhas coincidem" : "Senhas não coincidem";
+      } else {
+        matchMessage.style.display = "none";
+      }
     }
 
     const allValid =
@@ -286,16 +307,53 @@ document.addEventListener("DOMContentLoaded", () => {
       passwordsMatch &&
       nomeUsuarioInput.value.trim() !== "" &&
       cargoSelect.value !== "";
-    registerButton.disabled = !allValid;
+
+    if (registerButton) registerButton.disabled = !allValid;
   }
 
   if (senhaInput) {
-    [senhaInput, confirmSenhaInput, nomeUsuarioInput, cargoSelect].forEach(
-      (input) => {
-        if (input) input.addEventListener("input", validatePassword);
-      }
-    );
+    [senhaInput, confirmSenhaInput, nomeUsuarioInput, cargoSelect].forEach((input) => {
+      if (input) input.addEventListener("input", validatePassword);
+    });
   }
+  (function initRegisterToggles() {
+    const createToggleFor = (inputEl) => {
+      if (!inputEl) return;
+      // evita duplicar
+      if (inputEl.parentElement.querySelector(".toggle-password")) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "toggle-password";
+      btn.setAttribute("aria-label", "Mostrar senha");
+      btn.dataset.target = inputEl.id;
+      btn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      `;
+      const wrapper = inputEl.parentElement;
+      wrapper.appendChild(btn);
 
+      btn.addEventListener("click", () => {
+        const target = document.getElementById(btn.dataset.target);
+        if (!target) return;
+        const isPassword = target.type === "password";
+        target.type = isPassword ? "text" : "password";
+        if (isPassword) {
+          btn.classList.add("visible");
+          btn.setAttribute("aria-pressed", "true");
+          btn.setAttribute("aria-label", "Ocultar senha");
+        } else {
+          btn.classList.remove("visible");
+          btn.setAttribute("aria-pressed", "false");
+          btn.setAttribute("aria-label", "Mostrar senha");
+        }
+      });
+    };
+
+    createToggleFor(senhaInput);
+    createToggleFor(confirmSenhaInput);
+  })();
   loadUsers();
 });

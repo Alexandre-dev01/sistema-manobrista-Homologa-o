@@ -2304,3 +2304,13 @@ textarea:focus {
     font-size: 0.9em;
   }
 }
+.password-wrapper { position: relative; display: flex; align-items: center; }
+.password-wrapper input { width: 100%; padding-right: 44px; box-sizing: border-box; }
+.toggle-password {
+  position: absolute; right: 6px; background: transparent; border: none; cursor: pointer;
+  padding: 6px; display: inline-flex; align-items: center; justify-content: center; color: inherit;
+}
+.toggle-password:focus { outline: 2px solid #4d90fe; border-radius: 4px; }
+.toggle-password.visible svg { stroke: #4d90fe; }
+
+

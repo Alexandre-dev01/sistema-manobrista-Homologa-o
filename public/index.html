@@ -29,19 +29,29 @@
             maxlength="30"
           />
         </div>
-        <div class="input-group">
-          <label for="password">Senha</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            maxlength="60"
-          />
-        </div>
-        <button type="submit" class="btn-action">ENTRAR</button>
-      </form>
-    </div>
+     <div class="input-group password-group">
+  <label for="password">Senha</label>
+  <div class="password-wrapper">
+    <input
+      type="password"
+      id="password"
+      name="password"
+      required
+      maxlength="60"
+      aria-describedby="togglePassword"
+    />
+    <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar senha">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    </button>
+  </div>
+</div>
+ <button type="submit" class="btn-action">ENTRAR</button>
+</form>
+
+
     <script src="config.js"></script>
     <script src="components.js"></script>
     <script src="global.js"></script>
