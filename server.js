@@ -11,20 +11,16 @@ const veiculosRoutes = require("./routes/veiculosRoutes");
 const analiseRoutes = require("./routes/analiseRoutes");
 
 const app = express();
-
-// --- CONFIGURAÇÃO DE CORS
-// Lista de endereços (origens) que têm permissão para acessar esta API.
 const allowedOrigins = [
   "https://jade-puppy-cbd850.netlify.app",
   "http://127.0.0.1:5500",
   "http://localhost:5500",
   "http://localhost:3000",
-  "https://sistema-manobrista-homologa-o.onrender.com" // <--- [NOVO] O link do seu site no Render
+  "https://sistema-manobrista-homologa-o.onrender.com" 
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // Permite requisições sem origem (como apps mobile ou Postman) ou se estiver na lista
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
