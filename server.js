@@ -16,7 +16,7 @@ const allowedOrigins = [
   "http://127.0.0.1:5500",
   "http://localhost:5500",
   "http://localhost:3000",
-  "https://sistema-manobrista-homologa-o.onrender.com" 
+  "https://sistema-manobrista-api-v2.onrender.com" 
 ];
 
 const corsOptions = {
