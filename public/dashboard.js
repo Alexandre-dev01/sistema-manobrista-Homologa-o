@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
           consultaVeiculos: "consulta_veiculos.html",
           registroMassa: "registro_massa_veiculos.html",
           analiseConflitos: "analise.html",
-          cadastrarUsuario: "cadastro_usuario.html",
+          cadastrarUsuario: "gerenciar_usuarios.html",
         };
         if (pageMap[key]) window.location.href = pageMap[key];
       });
